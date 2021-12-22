@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lty.web2021.backend.dao.UserDao">
+  <resultMap id="BaseResultMap" type="lty.web2021.backend.model.User">
+    <id column="u_id" jdbcType="INTEGER" property="uId" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    u_id, `password`, username, phone, email, img, type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where u_id = #{uId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where u_id = #{uId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="u_id" keyProperty="uId" parameterType="lty.web2021.backend.model.User" useGeneratedKeys="true">
+    insert into user (`password`, username, phone, 
+      email, img, type)
+    values (#{password,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="u_id" keyProperty="uId" parameterType="lty.web2021.backend.model.User" useGeneratedKeys="true">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="img != null">
+        img,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="lty.web2021.backend.model.User">
+    update user
+    <set>
+      <if test="password != null and password!=''">
+        `password` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null and username!=''">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null and phone!=''">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null and email!=''">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null and img!=''">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where u_id = #{uId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="lty.web2021.backend.model.User">
+    update user
+    set `password` = #{password,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR}
+    where u_id = #{uId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lty.web2021.backend.dao.FriendDao">
+    <resultMap id="BaseResultMap" type="lty.web2021.backend.model.Friend">
+        <id column="u_id" jdbcType="INTEGER" property="uId"/>
+        <id column="f_id" jdbcType="INTEGER" property="fId"/>
+    </resultMap>
+
+    <resultMap id="FriendList" type="lty.web2021.backend.model.Friend">
+        <id column="u_id" jdbcType="INTEGER" property="uId"/>
+        <id column="f_id" jdbcType="INTEGER" property="fId"/>
+        <result column="img" jdbcType="VARCHAR" property="img"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="lty.web2021.backend.model.Friend">
+        delete
+        from friend
+        where u_id = #{uId,jdbcType=INTEGER}
+          and f_id = #{fId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="lty.web2021.backend.model.Friend">
+        insert into friend (u_id,f_id)
+        values (#{uId,jdbcType=INTEGER},#{fId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" keyColumn="u_id" keyProperty="uId" parameterType="lty.web2021.backend.model.Friend"
+            useGeneratedKeys="true">
+        insert into friend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fId != null">
+                f_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fId != null">
+                #{fId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectFriends" resultMap="FriendList">
+        select friend.u_id,f_id,username,img
+        from friend join user u on u.u_id = friend.f_id and friend.u_id=#{uid,jdbcType=INTEGER}
+        <if test="filter!=null and filter!=''">
+            and username like CONCAT('%',#{filter,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+</mapper>
